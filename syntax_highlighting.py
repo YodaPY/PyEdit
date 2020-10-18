@@ -50,15 +50,41 @@ def highlight(text) -> None:
 
     g = tokenize(BytesIO(text.get(1.0, END).encode('utf-8')).readline)
 
-    for token in g:
-        if token.type == 3:
-            text.tag_add(
-                'token.string',
-                f"{token.start[0]}.{token.start[1]}",
-                f"{token.end[0]}.{token.end[0]}"
-            )
+    try:
+        for token in g:
+            if token.type == 3:
+                text.tag_add(
+                    "token.string",
+                    f"{token.start[0]}.{token.start[1]}",
+                    f"{token.end[0]}.{token.end[1]}"
+                )
+
+            if token.type == 2:
+                text.tag_add(
+                    "token.number",
+                    f"{token.start[0]}.{token.start[1]}",
+                    f"{token.end[0]}.{token.end[1]}"
+                )
+
+            if token.type == 60:
+                text.tag_add(
+                    "token.comment",
+                    f"{token.start[0]}.{token.start[1]}",
+                    f"{token.end[0]}.{token.end[1]}"
+                )
+
+    except TokenError:
+        pass
 
     text.tag_config(
-        'token.string',
-        foreground="#fcba03"
+        "token.number",
+        foreground="#84db32"
+    )
+    text.tag_config(
+        "token.comment",
+        foreground="#326601"
+    )
+    text.tag_config(
+        "token.string",
+        foreground="#c79202"
     )
