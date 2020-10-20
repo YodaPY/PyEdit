@@ -89,6 +89,7 @@ class _Syntax:
 
         try:
             for token in g:
+                print(token)
                 if token.type == 3:
                     text.tag_add(
                         "token.string",
@@ -111,7 +112,7 @@ class _Syntax:
                     )
 
                 if token.type == 1:
-                    if match(rf"def\s+{token.string}", token.line):
+                    if match(rf"^def\s+(?P<name>{token.string})\s*\((?P<args>[^)]*)\)\s*(?:->\s*(?P<returntype>[^:]+))?:$", token.line):
                         text.tag_add(
                             "token.definition",
                             f"{token.start[0]}.{token.start[1]}",
