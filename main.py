@@ -48,6 +48,11 @@ class TextEditor(Frame):
         bar.select_all_button()
         bar.deselect_all_button()
         bar.keyword_highlighting_button()
+        bar.builtin_highlighting_button()
+        bar.number_highlighting_button()
+        bar.comment_highlighting_button()
+        bar.string_highlighting_button()
+        bar.definition_highlighting_button()
         self.text.bind("<KeyRelease>")
 
     def add_scrollbar(self) -> None:
@@ -101,15 +106,17 @@ class TextEditor(Frame):
 def run() -> None:
     root = Tk()
     root.title("PyEdit")
+    syntax = Syntax(root)
+    syntax.load_colors()
+    print(syntax.colors)
     texteditor = TextEditor(root)
     texteditor.pack(
         side="top",
         fill=BOTH,
         expand=True
     )
-    syntax = Syntax(root)
-    syntax.load_colors()
     root.mainloop()
     syntax.save_colors()
+    print("hi")
 
 run()

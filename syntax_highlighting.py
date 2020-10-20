@@ -13,6 +13,20 @@ from re import match
 from json import load, dump
 
 class Syntax:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if Syntax._instance is None:
+            Syntax._instance = _Syntax(*args, **kwargs)
+        return Syntax._instance
+
+    def __getattr__(self, name):
+        return getattr(Syntax._instance, name)
+
+    def __setattr__(self, name, value):
+        return setattr(Syntax._instance, name, value)
+
+class _Syntax:
     def __init__(
         self,
         master
@@ -36,10 +50,10 @@ class Syntax:
         d = {}
 
         for kw in keywords:
-            d[kw] = "#8f19f7"
+            d[kw] = self.colors["keyword"] ##8f19f7
 
         for bi in dir(builtins):
-            d[bi] = "#1936f7"
+            d[bi] = self.colors["builtin"] ##1936f7
 
         for key, hex_value in d.items():
             text.tag_remove(key, 1.0, END)
@@ -109,17 +123,17 @@ class Syntax:
 
         text.tag_config(
             "token.number",
-            foreground="#56a30a"
+            foreground=self.colors["number"] ##56a30a
         )
         text.tag_config(
             "token.comment",
-            foreground="#979399"
+            foreground=self.colors["comment"] ##979399
         )
         text.tag_config(
             "token.string",
-            foreground="#326601"
+            foreground=self.colors["string"] ##326601
         )
         text.tag_config(
             "token.definition",
-            foreground="#e39a24"
+            foreground=self.colors["definition"] ##e39a24
         )
