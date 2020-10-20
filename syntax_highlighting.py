@@ -89,7 +89,6 @@ class _Syntax:
 
         try:
             for token in g:
-                print(token)
                 if token.type == 3:
                     text.tag_add(
                         "token.string",
