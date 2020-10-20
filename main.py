@@ -108,7 +108,6 @@ def run() -> None:
     root.title("PyEdit")
     syntax = Syntax(root)
     syntax.load_colors()
-    print(syntax.colors)
     texteditor = TextEditor(root)
     texteditor.pack(
         side="top",
@@ -117,6 +116,5 @@ def run() -> None:
     )
     root.mainloop()
     syntax.save_colors()
-    print("hi")
 
 run()
