@@ -111,7 +111,7 @@ class _Syntax:
                     )
 
                 if token.type == 1:
-                    if match(rf"^def\s+(?P<name>{token.string})\s*\((?P<args>[^)]*)\)\s*(?:->\s*(?P<returntype>[^:]+))?:$", token.line):
+                    if match(rf"^\s*def\s+(?P<name>{token.string})\s*\((?P<args>[^)]*)\)\s*(?:->\s*(?P<returntype>[^:]+))?:", token.line) or match(rf"^\s*class\s+(?P<name>{token.string})\s*(?P<subclass>\([a-zA-Z_]+\))?:", token.line):
                         text.tag_add(
                             "token.definition",
                             f"{token.start[0]}.{token.start[1]}",
