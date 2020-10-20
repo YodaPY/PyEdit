@@ -16,7 +16,7 @@ from lines import (
     CustomText
 )
 from toolbar import Toolbar
-from syntax_highlighting import highlight
+from syntax_highlighting import Syntax
 
 class TextEditor(Frame):
     def __init__(
@@ -30,6 +30,7 @@ class TextEditor(Frame):
             self,
             width=20
         )
+        self.syntax = Syntax(master)
         self.add_scrollbar()
         bar = Toolbar(master, self.text)
         bar.open_file_button()
@@ -46,6 +47,7 @@ class TextEditor(Frame):
         bar.find_and_replace_button()
         bar.select_all_button()
         bar.deselect_all_button()
+        bar.keyword_highlighting_button()
         self.text.bind("<KeyRelease>")
 
     def add_scrollbar(self) -> None:
@@ -94,16 +96,20 @@ class TextEditor(Frame):
         self.line_numbers.redraw()
 
     def on_key_release(self, event) -> None:
-        highlight(self.text)
+        self.syntax.highlight(self.text)
 
 def run() -> None:
     root = Tk()
     root.title("PyEdit")
-    TextEditor(root).pack(
+    texteditor = TextEditor(root)
+    texteditor.pack(
         side="top",
         fill=BOTH,
         expand=True
     )
+    syntax = Syntax(root)
+    syntax.load_colors()
     root.mainloop()
+    syntax.save_colors()
 
 run()

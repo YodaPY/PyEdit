@@ -19,10 +19,11 @@ from tkinter import (
 )
 from lines import CustomText
 from time import sleep
-from syntax_highlighting import highlight
+from syntax_highlighting import Syntax
 from traceback import format_exc
 from io import StringIO
 from contextlib import contextmanager
+from re import match
 
 class Toolbar:
     def __init__(
@@ -33,14 +34,17 @@ class Toolbar:
         
         self.master = master
         self.text = text
+        self.syntax = Syntax(master)
         self.toolbar = Menu(self.master)
         self.master.config(menu=self.toolbar)
         self.filemenu = Menu(self.toolbar)
         self.editmenu = Menu(self.toolbar)
         self.selectionmenu = Menu(self.toolbar)
+        self.syntaxmenu = Menu(self.toolbar)
         self.toolbar.add_cascade(label="File", menu=self.filemenu)
         self.toolbar.add_cascade(label="Edit", menu=self.editmenu)
         self.toolbar.add_cascade(label="Selection", menu=self.selectionmenu)
+        self.toolbar.add_cascade(label="Syntax", menu=self.syntaxmenu)
         self.current_file = None
 
     def open_file_button(self) -> None:
@@ -54,7 +58,7 @@ class Toolbar:
             self.current_file = filename
             lines = read_file(filename)
             self.text.insert(END, lines)
-            highlight(self.text)
+            self.syntax.highlight(self.text)
 
         def read_file(filename):
             with open(filename) as f:
@@ -72,7 +76,7 @@ class Toolbar:
                     text = str(self.text.get(1.0, END))
                     f.write(text)
                     f.close()
-                    highlight(self.text)
+                    self.syntax.highlight(self.text)
                     self.master.title("File Saved.")
                     self.master.update()
                     sleep(2)
@@ -93,7 +97,7 @@ class Toolbar:
         text = str(self.text.get(1.0, END))
         f.write(text)
         f.close()
-        highlight(self.text)
+        self.syntax.highlight(self.text)
         self.current_file = f.name
         self.master.title(f"File saved as {f.name}.")
         self.master.update()
@@ -327,3 +331,18 @@ class Toolbar:
             self.text.tag_remove("sel", 1.0, END)
 
         self.selectionmenu.add_command(label="Deselect All", command=deselect_all)
+
+    def keyword_highlighting_button(self) -> None:
+        def keyword_highlighting():
+            hex_code = simpledialog.askstring(
+                title="Keyword Highlighting",
+                prompt="What hex color should be used for keyword highlighting?"
+            )
+            
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
+                self.syntax.colors["keyword"] = hex_code
+
+            else:
+                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+
+        self.syntaxmenu.add_command(label="Keyword", command=keyword_highlighting)
