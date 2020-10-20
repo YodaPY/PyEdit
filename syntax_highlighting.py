@@ -8,6 +8,7 @@ from tokenize import (
     TokenError
 )
 from io import BytesIO
+from re import match
 
 def highlight(text) -> None:
     keywords = keyword.kwlist
@@ -73,18 +74,30 @@ def highlight(text) -> None:
                     f"{token.end[0]}.{token.end[1]}"
                 )
 
+            if token.type == 1:
+                if match(rf"def\s+{token.string}", token.line):
+                    text.tag_add(
+                        "token.definition",
+                        f"{token.start[0]}.{token.start[1]}",
+                        f"{token.end[0]}.{token.end[1]}"
+                    )
+
     except TokenError:
         pass
 
     text.tag_config(
         "token.number",
-        foreground="#84db32"
+        foreground="#56a30a"
     )
     text.tag_config(
         "token.comment",
-        foreground="#326601"
+        foreground="#979399"
     )
     text.tag_config(
         "token.string",
-        foreground="#c79202"
+        foreground="#326601"
+    )
+    text.tag_config(
+        "token.definition",
+        foreground="#e39a24"
     )
