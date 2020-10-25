@@ -283,15 +283,6 @@ class Toolbar:
     def keyword_highlighting_button(self) -> None:
         def keyword_highlighting():
             color = colorchooser.askcolor()
-            hex_code = simpledialog.askstring(
-                title="Keyword Highlighting",
-                prompt="What hex color should be used for keyword highlighting?",
-            )
-
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
-                r"#[a-fA-F0-9]{6}", hex_code
-            ):
-                self.syntax.colors["keyword"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["keyword"] = color[1]
@@ -301,15 +292,6 @@ class Toolbar:
     def builtin_highlighting_button(self) -> None:
         def builtin_highlighting():
             color = colorchooser.askcolor()
-            hex_code = simpledialog.askstring(
-                title="Built-in Function Highlighting",
-                prompt="What hex color should be used for built-in function highlighting?",
-            )
-
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
-                r"#[a-fA-F0-9]{6}", hex_code
-            ):
-                self.syntax.colors["builtin"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["builtin"] = color[1]
@@ -319,15 +301,6 @@ class Toolbar:
     def number_highlighting_button(self) -> None:
         def number_highlighting():
             color = colorchooser.askcolor()
-            hex_code = simpledialog.askstring(
-                title="Number Highlighting",
-                prompt="What hex color should be used for number highlighting?",
-            )
-
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
-                r"#[a-fA-F0-9]{6}", hex_code
-            ):
-                self.syntax.colors["number"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["number"] = color[1]
@@ -337,15 +310,6 @@ class Toolbar:
     def comment_highlighting_button(self) -> None:
         def comment_highlighting():
             color = colorchooser.askcolor()
-            hex_code = simpledialog.askstring(
-                title="Comment Highlighting",
-                prompt="What hex color should be used for comment highlighting?",
-            )
-
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
-                r"#[a-fA-F0-9]{6}", hex_code
-            ):
-                self.syntax.colors["comment"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["comment"] = color[1]
@@ -355,15 +319,6 @@ class Toolbar:
     def string_highlighting_button(self) -> None:
         def string_highlighting():
             color = colorchooser.askcolor()
-            hex_code = simpledialog.askstring(
-                title="String Highlighting",
-                prompt="What hex color should be used for string highlighting?",
-            )
-
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
-                r"#[a-fA-F0-9]{6}", hex_code
-            ):
-                self.syntax.colors["string"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["string"] = color[1]
@@ -373,15 +328,6 @@ class Toolbar:
     def definition_highlighting_button(self) -> None:
         def definition_highlighting():
             color = colorchooser.askcolor()
-            hex_code = simpledialog.askstring(
-                title="Definition Highlighting",
-                prompt="What hex color should be used for definition highlighting?",
-            )
-
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
-                r"#[a-fA-F0-9]{6}", hex_code
-            ):
-                self.syntax.colors["definition"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["definition"] = color[1]
