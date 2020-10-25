@@ -42,10 +42,12 @@ class Toolbar:
         self.editmenu = Menu(self.toolbar)
         self.selectionmenu = Menu(self.toolbar)
         self.syntaxmenu = Menu(self.toolbar)
+        self.helpmenu = Menu(self.toolbar)
         self.toolbar.add_cascade(label="File", menu=self.filemenu)
         self.toolbar.add_cascade(label="Edit", menu=self.editmenu)
         self.toolbar.add_cascade(label="Selection", menu=self.selectionmenu)
         self.toolbar.add_cascade(label="Syntax", menu=self.syntaxmenu)
+        self.toolbar.add_cascade(label="Help", menu=self.helpmenu)
         self.current_file = None
 
     def open_file_button(self) -> None:
@@ -410,7 +412,7 @@ class Toolbar:
         self.syntaxmenu.add_command(label="String", command=string_highlighting)
 
     def definition_highlighting_button(self) -> None:
-        def definition__highlighting():
+        def definition_highlighting():
             hex_code = simpledialog.askstring(
                 title="Definition Highlighting",
                 prompt="What hex color should be used for definition highlighting?"
@@ -422,4 +424,35 @@ class Toolbar:
             else:
                 messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
 
-        self.syntaxmenu.add_command(label="Definition", command=definition__highlighting)
+        self.syntaxmenu.add_command(label="Definition", command=definition_highlighting)
+
+    def stackoverflow_button(self) -> None:
+        def stackoverflow():
+            problem = simpledialog.askstring(
+                title="Stackoverflow",
+                prompt="What problem do you need help with?"
+            )
+
+            resp = requests.get(
+                "https://api.stackexchange.com/search",
+                params={
+                    "site": "stackoverflow.com",
+                    "intitle": problem,
+                    "sort": "votes"
+                },
+                headers={
+                    "Accept": "application/json;charset=UTF-8"
+                }
+            )
+
+            data = resp.json()
+
+            try:
+                webbrowser.open(
+                    data["items"][0]["link"]
+                )
+
+            except IndexError:
+                messagebox.showerror("Not Found", "I couldn't find any related posts to your problem.")
+
+        self.helpmenu.add_command(label="Stackoverflow", command=stackoverflow)
