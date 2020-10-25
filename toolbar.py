@@ -342,7 +342,7 @@ class Toolbar:
             color = colorchooser.askcolor()
 
             if color[0] is not None:
-                self.syntax.colors["keyword"] = color[2]
+                self.syntax.colors["keyword"] = color[1]
 
         self.syntaxmenu.add_command(label="Keyword", command=keyword_highlighting)
 
@@ -351,7 +351,7 @@ class Toolbar:
             color = colorchooser.askcolor()
 
             if color[0] is not None:
-                self.syntax.colors["builtin"] = color[2]
+                self.syntax.colors["builtin"] = color[1]
 
         self.syntaxmenu.add_command(label="Built-in", command=builtin_highlighting)
 
@@ -360,7 +360,7 @@ class Toolbar:
             color = colorchooser.askcolor()
 
             if color[0] is not None:
-                self.syntax.colors["number"] = color[2]
+                self.syntax.colors["number"] = color[1]
 
         self.syntaxmenu.add_command(label="Number", command=number_highlighting)
 
@@ -369,7 +369,7 @@ class Toolbar:
             color = colorchooser.askcolor()
 
             if color[0] is not None:
-                self.syntax.colors["comment"] = color[2]
+                self.syntax.colors["comment"] = color[1]
 
         self.syntaxmenu.add_command(label="Comment", command=comment_highlighting)
 
@@ -378,7 +378,7 @@ class Toolbar:
             color = colorchooser.askcolor()
 
             if color[0] is not None:
-                self.syntax.colors["string"] = color[2]
+                self.syntax.colors["string"] = color[1]
 
         self.syntaxmenu.add_command(label="String", command=string_highlighting)
 
@@ -387,7 +387,7 @@ class Toolbar:
             color = colorchooser.askcolor()
 
             if color[0] is not None:
-                self.syntax.colors["definition"] = color[2]
+                self.syntax.colors["definition"] = color[1]
 
         self.syntaxmenu.add_command(label="Definition", command=definition_highlighting)
 
