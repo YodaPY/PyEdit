@@ -16,7 +16,8 @@ from tkinter import (
     TOP,
     Text,
     BOTTOM,
-    Toplevel
+    Toplevel,
+    colorchooser
 )
 from lines import CustomText
 from time import sleep
@@ -338,91 +339,55 @@ class Toolbar:
 
     def keyword_highlighting_button(self) -> None:
         def keyword_highlighting():
-            hex_code = simpledialog.askstring(
-                title="Keyword Highlighting",
-                prompt="What hex color should be used for keyword highlighting?"
-            )
-            
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
-                self.syntax.colors["keyword"] = hex_code
+            color = colorchooser.askcolor()
 
-            else:
-                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+            if color[0] is not None:
+                self.syntax.colors["keyword"] = color[2]
 
         self.syntaxmenu.add_command(label="Keyword", command=keyword_highlighting)
 
     def builtin_highlighting_button(self) -> None:
         def builtin_highlighting():
-            hex_code = simpledialog.askstring(
-                title="Built-in Function Highlighting",
-                prompt="What hex color should be used for built-in function highlighting?"
-            )
-            
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
-                self.syntax.colors["builtin"] = hex_code
+            color = colorchooser.askcolor()
 
-            else:
-                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+            if color[0] is not None:
+                self.syntax.colors["builtin"] = color[2]
 
         self.syntaxmenu.add_command(label="Built-in", command=builtin_highlighting)
 
     def number_highlighting_button(self) -> None:
         def number_highlighting():
-            hex_code = simpledialog.askstring(
-                title="Number Highlighting",
-                prompt="What hex color should be used for number highlighting?"
-            )
-            
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
-                self.syntax.colors["number"] = hex_code
+            color = colorchooser.askcolor()
 
-            else:
-                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+            if color[0] is not None:
+                self.syntax.colors["number"] = color[2]
 
         self.syntaxmenu.add_command(label="Number", command=number_highlighting)
 
     def comment_highlighting_button(self) -> None:
         def comment_highlighting():
-            hex_code = simpledialog.askstring(
-                title="Comment Highlighting",
-                prompt="What hex color should be used for comment highlighting?"
-            )
-            
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
-                self.syntax.colors["comment"] = hex_code
+            color = colorchooser.askcolor()
 
-            else:
-                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+            if color[0] is not None:
+                self.syntax.colors["comment"] = color[2]
 
         self.syntaxmenu.add_command(label="Comment", command=comment_highlighting)
 
     def string_highlighting_button(self) -> None:
         def string_highlighting():
-            hex_code = simpledialog.askstring(
-                title="String Highlighting",
-                prompt="What hex color should be used for string highlighting?"
-            )
-            
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
-                self.syntax.colors["string"] = hex_code
+            color = colorchooser.askcolor()
 
-            else:
-                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+            if color[0] is not None:
+                self.syntax.colors["string"] = color[2]
 
         self.syntaxmenu.add_command(label="String", command=string_highlighting)
 
     def definition_highlighting_button(self) -> None:
         def definition_highlighting():
-            hex_code = simpledialog.askstring(
-                title="Definition Highlighting",
-                prompt="What hex color should be used for definition highlighting?"
-            )
-            
-            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(r"#[a-fA-F0-9]{6}", hex_code):
-                self.syntax.colors["definition"] = hex_code
+            color = colorchooser.askcolor()
 
-            else:
-                messagebox.showerror("Invalid hex code", "That's not a valid hex_code")
+            if color[0] is not None:
+                self.syntax.colors["definition"] = color[2]
 
         self.syntaxmenu.add_command(label="Definition", command=definition_highlighting)
 
