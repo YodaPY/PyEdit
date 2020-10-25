@@ -53,7 +53,7 @@ class TextEditor(Frame):
         bar.comment_highlighting_button()
         bar.string_highlighting_button()
         bar.definition_highlighting_button()
-        self.text.bind("<KeyRelease>")
+        bar.stackoverflow_button()
 
     def add_scrollbar(self) -> None:
         self.y_scrollbar = Scrollbar(self.master)
