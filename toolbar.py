@@ -128,7 +128,6 @@ class Toolbar:
             self.master.clipboard_append(link)
             self.master.update()
             webbrowser.open(link)
-            #messagebox.showinfo("hastebin link", f"https://hastebin.com/{data['key']} copied to clipboard")
 
         self.filemenu.add_command(label="Post to hastebin", command=post_to_hastebin)
 
