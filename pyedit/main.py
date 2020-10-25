@@ -1,35 +1,16 @@
-from tkinter import (
-    Tk,
-    Scrollbar,
-    Text,
-    RIGHT,
-    Y,
-    BOTH,
-    YES,
-    Frame,
-    NONE,
-    BOTTOM,
-    X
-)
-from lines import (
-    TextLineNumbers,
-    CustomText
-)
-from toolbar import Toolbar
-from syntax_highlighting import Syntax
+from tkinter import BOTH, BOTTOM, NONE, RIGHT, Frame, Scrollbar, Tk, X, Y
+
+from pyedit.lines import CustomText, TextLineNumbers
+from pyedit.syntax_highlighting import Syntax
+from pyedit.toolbar import Toolbar
+
 
 class TextEditor(Frame):
-    def __init__(
-        self,
-        master=None
-    ) -> None:
+    def __init__(self, master=None) -> None:
         super().__init__(master)
 
         self.master = master
-        self.line_numbers = TextLineNumbers(
-            self,
-            width=20
-        )
+        self.line_numbers = TextLineNumbers(self, width=20)
         self.syntax = Syntax(master)
         self.add_scrollbar()
         bar = Toolbar(master, self.text)
@@ -57,15 +38,9 @@ class TextEditor(Frame):
 
     def add_scrollbar(self) -> None:
         self.y_scrollbar = Scrollbar(self.master)
-        self.x_scrollbar = Scrollbar(self.master, orient='horizontal')
-        self.y_scrollbar.pack(
-            side=RIGHT,
-            fill=Y
-        )
-        self.x_scrollbar.pack(
-            side=BOTTOM,
-            fill=X
-        )
+        self.x_scrollbar = Scrollbar(self.master, orient="horizontal")
+        self.y_scrollbar.pack(side=RIGHT, fill=Y)
+        self.x_scrollbar.pack(side=BOTTOM, fill=X)
         self.line_numbers.pack(side="left", fill=Y)
 
         self.text = CustomText(
@@ -76,25 +51,17 @@ class TextEditor(Frame):
             tabs=28,
             wrap=NONE,
             undo=True,
-            maxundo=1
+            maxundo=1,
         )
 
-        self.text.pack(
-            fill=BOTH,
-            side=RIGHT,
-            expand=True
-        )
+        self.text.pack(fill=BOTH, side=RIGHT, expand=True)
 
         self.text.bind("<<Change>>", self.on_change)
         self.text.bind("<Configure>", self.on_change)
         self.text.bind("<KeyRelease>", self.on_key_release)
 
-        self.y_scrollbar.config(
-            command=self.text.yview
-        )
-        self.x_scrollbar.config(
-            command=self.text.xview
-        )
+        self.y_scrollbar.config(command=self.text.yview)
+        self.x_scrollbar.config(command=self.text.xview)
         self.line_numbers.attach(self.text)
 
     def on_change(self, event) -> None:
@@ -103,18 +70,16 @@ class TextEditor(Frame):
     def on_key_release(self, event) -> None:
         self.syntax.highlight(self.text)
 
+
 def run() -> None:
     root = Tk()
     root.title("PyEdit")
     syntax = Syntax(root)
     syntax.load_colors()
     texteditor = TextEditor(root)
-    texteditor.pack(
-        side="top",
-        fill=BOTH,
-        expand=True
-    )
+    texteditor.pack(side="top", fill=BOTH, expand=True)
     root.mainloop()
     syntax.save_colors()
+
 
 run()

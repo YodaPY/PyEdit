@@ -1,15 +1,8 @@
-from tkinter import (
-    Canvas,
-    Text,
-    TclError
-)
+from tkinter import Canvas, TclError, Text
+
 
 class TextLineNumbers(Canvas):
-    def __init__(
-        self, 
-        *args, 
-        **kwargs
-    ) -> None:
+    def __init__(self, *args, **kwargs) -> None:
 
         Canvas.__init__(self, *args, **kwargs)
         self.textwidget = None
@@ -28,19 +21,12 @@ class TextLineNumbers(Canvas):
 
             y = dline[1]
             linenum = str(i).split(".")[0]
-            self.create_text(
-                2, y, 
-                anchor="nw", 
-                text=linenum
-            )
+            self.create_text(2, y, anchor="nw", text=linenum)
             i = self.textwidget.index("%s+1line" % i)
 
+
 class CustomText(Text):
-    def __init__(
-        self, 
-        *args, 
-        **kwargs
-    ) -> None:
+    def __init__(self, *args, **kwargs) -> None:
 
         Text.__init__(self, *args, **kwargs)
 
@@ -55,13 +41,14 @@ class CustomText(Text):
         except TclError:
             return None
 
-        if (args[0] in ("insert", "replace", "delete") or 
-            args[0:3] == ("mark", "set", "insert") or
-            args[0:2] == ("xview", "moveto") or
-            args[0:2] == ("xview", "scroll") or
-            args[0:2] == ("yview", "moveto") or
-            args[0:2] == ("yview", "scroll")
+        if (
+            args[0] in ("insert", "replace", "delete")
+            or args[0:3] == ("mark", "set", "insert")
+            or args[0:2] == ("xview", "moveto")
+            or args[0:2] == ("xview", "scroll")
+            or args[0:2] == ("yview", "moveto")
+            or args[0:2] == ("yview", "scroll")
         ):
             self.event_generate("<<Change>>", when="tail")
 
-        return result        
+        return result
