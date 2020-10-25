@@ -1,5 +1,6 @@
 import sys
 import requests
+import webbrowser
 from tkinter import (
     Menu,
     END,
@@ -123,9 +124,11 @@ class Toolbar:
                 data=text
             )
             data = resp.json()
-            self.master.clipboard_append(f"https://hastebin.com/{data['key']}")
+            link = f"https://hastebin.com/{data['key']}"
+            self.master.clipboard_append(link)
             self.master.update()
-            messagebox.showinfo("hastebin link", f"https://hastebin.com/{data['key']} copied to clipboard")
+            webbrowser.open(link)
+            #messagebox.showinfo("hastebin link", f"https://hastebin.com/{data['key']} copied to clipboard")
 
         self.filemenu.add_command(label="Post to hastebin", command=post_to_hastebin)
 
