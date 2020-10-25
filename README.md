@@ -15,3 +15,4 @@ pip install git+https://github.com/YodaPY/PyEdit.git
 ```
 ```
 python -m pyedit
+```
