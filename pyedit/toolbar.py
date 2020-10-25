@@ -1,39 +1,31 @@
 import sys
-import requests
 import webbrowser
+from contextlib import contextmanager
+from io import StringIO
+from re import match
+from time import sleep
 from tkinter import (
-    Menu,
-    END,
-    filedialog,
     BOTH,
-    RIGHT,
-    messagebox,
+    END,
     Button,
+    Menu,
+    filedialog,
+    messagebox,
     simpledialog,
-    Frame,
     Entry,
     LEFT,
-    TOP,
-    Text,
-    BOTTOM,
-    Toplevel,
     colorchooser
 )
-from lines import CustomText
-from time import sleep
-from syntax_highlighting import Syntax
 from traceback import format_exc
-from io import StringIO
-from contextlib import contextmanager
-from re import match
+
+import requests
+
+from pyedit.syntax_highlighting import Syntax
+
 
 class Toolbar:
-    def __init__(
-        self,
-        master,
-        text
-    ) -> None:
-        
+    def __init__(self, master, text) -> None:
+
         self.master = master
         self.text = text
         self.syntax = Syntax(master)
@@ -53,10 +45,8 @@ class Toolbar:
 
     def open_file_button(self) -> None:
         def open_file():
-            ftypes = [('Python files', '*.py'), ('All files', '*')]
-            dlg = filedialog.Open(
-                filetypes=ftypes
-            )
+            ftypes = [("Python files", "*.py"), ("All files", "*")]
+            dlg = filedialog.Open(filetypes=ftypes)
 
             filename = dlg.show()
             self.current_file = filename
@@ -93,10 +83,7 @@ class Toolbar:
         self.filemenu.add_command(label="Save File as...", command=self.save_file_as)
 
     def save_file_as(self) -> None:
-        f = filedialog.asksaveasfile(
-            mode="w",
-            defaultextension=".py"
-        )
+        f = filedialog.asksaveasfile(mode="w", defaultextension=".py")
 
         text = str(self.text.get(1.0, END))
         f.write(text)
@@ -122,10 +109,7 @@ class Toolbar:
     def post_to_hastebin_button(self) -> None:
         def post_to_hastebin():
             text = self.text.get(1.0, END)
-            resp = requests.post(
-                "https://hastebin.com/documents",
-                data=text
-            )
+            resp = requests.post("https://hastebin.com/documents", data=text)
             data = resp.json()
             link = f"https://hastebin.com/{data['key']}"
             self.master.clipboard_append(link)
@@ -152,7 +136,7 @@ class Toolbar:
                 except:
                     code_res = format_exc()
                     messagebox.showerror("Error", str(code_res))
-            
+
         self.filemenu.add_command(label="Run", command=run)
 
     def close_editor_button(self) -> None:
@@ -166,7 +150,7 @@ class Toolbar:
             self.text.event_generate("<<Undo>>")
 
         self.editmenu.add_command(label="Undo", command=undo)
-    
+
     def redo_button(self) -> None:
         def redo():
             self.text.event_generate("<<Redo>>")
@@ -194,11 +178,7 @@ class Toolbar:
     def find_and_replace_button(self) -> None:
         def find_and_replace():
             entry = Entry()
-            entry.pack(
-                side=LEFT,
-                fill=BOTH,
-                expand=1
-            )
+            entry.pack(side=LEFT, fill=BOTH, expand=1)
 
             self.regex = False
 
@@ -215,7 +195,7 @@ class Toolbar:
                             first,
                             nocase=False,
                             stopindex=END,
-                            regexp=self.regex
+                            regexp=self.regex,
                         )
 
                     else:
@@ -224,14 +204,14 @@ class Toolbar:
                             first,
                             nocase=False,
                             stopindex=END,
-                            regexp=self.regex
+                            regexp=self.regex,
                         )
 
                     first_splitted = first.split(".")
 
                     try:
                         last = f"{first_splitted[0]}.{int(first_splitted[1]) + len(self.find_string)}"
-                    
+
                     except IndexError:
                         break
 
@@ -240,28 +220,15 @@ class Toolbar:
                     self.text.tag_add(self.find_string, first, last)
                     first = last
 
-                self.text.tag_config(
-                    self.find_string,
-                    background="#e9f02b"
-                )
+                self.text.tag_config(self.find_string, background="#e9f02b")
 
                 return indexes
 
-            find_button = Button(
-                self.master,
-                text="Find",
-                command=find
-            )
-            find_button.pack(
-                side=LEFT
-            )
+            find_button = Button(self.master, text="Find", command=find)
+            find_button.pack(side=LEFT)
 
             entry2 = Entry()
-            entry2.pack(
-                side=LEFT,
-                fill=BOTH,
-                expand=1
-            )
+            entry2.pack(side=LEFT, fill=BOTH, expand=1)
 
             def replace():
                 self.text.tag_delete(self.find_string)
@@ -271,38 +238,21 @@ class Toolbar:
                     self.text.delete(index[0], index[1])
                     self.text.insert(index[0], replace_string)
 
-            replace_button = Button(
-                self.master,
-                text="Replace",
-                command=replace
-            )
+            replace_button = Button(self.master, text="Replace", command=replace)
 
-            replace_button.pack(
-                side=LEFT
-            )
+            replace_button.pack(side=LEFT)
 
             def toggle():
                 if toggle_button.config("text")[-1] == "Regex Off":
-                    toggle_button.config(
-                        text="Regex On"
-                    )
+                    toggle_button.config(text="Regex On")
                     self.regex = True
 
                 else:
-                    toggle_button.config(
-                        text="Regex Off"
-                    )
+                    toggle_button.config(text="Regex Off")
                     self.regex = False
 
-            toggle_button = Button(
-                self.master,
-                text="Regex Off",
-                command=toggle
-            )
-            toggle_button.pack(
-                pady=5,
-                side=LEFT
-            )
+            toggle_button = Button(self.master, text="Regex Off", command=toggle)
+            toggle_button.pack(pady=5, side=LEFT)
 
             def exit_all():
                 entry.destroy()
@@ -312,16 +262,9 @@ class Toolbar:
                 toggle_button.destroy()
                 exit_button.destroy()
 
-            exit_button = Button(
-                self.master,
-                text="Exit",
-                command=exit_all
-            )
+            exit_button = Button(self.master, text="Exit", command=exit_all)
 
-            exit_button.pack(
-                pady=5,
-                side=LEFT
-            )
+            exit_button.pack(pady=5, side=LEFT)
 
         self.editmenu.add_command(label="Find and Replace", command=find_and_replace)
 
@@ -340,6 +283,15 @@ class Toolbar:
     def keyword_highlighting_button(self) -> None:
         def keyword_highlighting():
             color = colorchooser.askcolor()
+            hex_code = simpledialog.askstring(
+                title="Keyword Highlighting",
+                prompt="What hex color should be used for keyword highlighting?",
+            )
+
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
+                r"#[a-fA-F0-9]{6}", hex_code
+            ):
+                self.syntax.colors["keyword"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["keyword"] = color[1]
@@ -349,6 +301,15 @@ class Toolbar:
     def builtin_highlighting_button(self) -> None:
         def builtin_highlighting():
             color = colorchooser.askcolor()
+            hex_code = simpledialog.askstring(
+                title="Built-in Function Highlighting",
+                prompt="What hex color should be used for built-in function highlighting?",
+            )
+
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
+                r"#[a-fA-F0-9]{6}", hex_code
+            ):
+                self.syntax.colors["builtin"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["builtin"] = color[1]
@@ -358,6 +319,15 @@ class Toolbar:
     def number_highlighting_button(self) -> None:
         def number_highlighting():
             color = colorchooser.askcolor()
+            hex_code = simpledialog.askstring(
+                title="Number Highlighting",
+                prompt="What hex color should be used for number highlighting?",
+            )
+
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
+                r"#[a-fA-F0-9]{6}", hex_code
+            ):
+                self.syntax.colors["number"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["number"] = color[1]
@@ -367,6 +337,15 @@ class Toolbar:
     def comment_highlighting_button(self) -> None:
         def comment_highlighting():
             color = colorchooser.askcolor()
+            hex_code = simpledialog.askstring(
+                title="Comment Highlighting",
+                prompt="What hex color should be used for comment highlighting?",
+            )
+
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
+                r"#[a-fA-F0-9]{6}", hex_code
+            ):
+                self.syntax.colors["comment"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["comment"] = color[1]
@@ -376,6 +355,15 @@ class Toolbar:
     def string_highlighting_button(self) -> None:
         def string_highlighting():
             color = colorchooser.askcolor()
+            hex_code = simpledialog.askstring(
+                title="String Highlighting",
+                prompt="What hex color should be used for string highlighting?",
+            )
+
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
+                r"#[a-fA-F0-9]{6}", hex_code
+            ):
+                self.syntax.colors["string"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["string"] = color[1]
@@ -385,6 +373,15 @@ class Toolbar:
     def definition_highlighting_button(self) -> None:
         def definition_highlighting():
             color = colorchooser.askcolor()
+            hex_code = simpledialog.askstring(
+                title="Definition Highlighting",
+                prompt="What hex color should be used for definition highlighting?",
+            )
+
+            if match(r"#[a-fA-F0-9]{3}", hex_code) or match(
+                r"#[a-fA-F0-9]{6}", hex_code
+            ):
+                self.syntax.colors["definition"] = hex_code
 
             if color[0] is not None:
                 self.syntax.colors["definition"] = color[1]
@@ -394,8 +391,7 @@ class Toolbar:
     def stackoverflow_button(self) -> None:
         def stackoverflow():
             problem = simpledialog.askstring(
-                title="Stackoverflow",
-                prompt="What problem do you need help with?"
+                title="Stackoverflow", prompt="What problem do you need help with?"
             )
 
             resp = requests.get(
@@ -403,21 +399,19 @@ class Toolbar:
                 params={
                     "site": "stackoverflow.com",
                     "intitle": problem,
-                    "sort": "votes"
+                    "sort": "votes",
                 },
-                headers={
-                    "Accept": "application/json;charset=UTF-8"
-                }
+                headers={"Accept": "application/json;charset=UTF-8"},
             )
 
             data = resp.json()
 
             try:
-                webbrowser.open(
-                    data["items"][0]["link"]
-                )
+                webbrowser.open(data["items"][0]["link"])
 
             except IndexError:
-                messagebox.showerror("Not Found", "I couldn't find any related posts to your problem.")
+                messagebox.showerror(
+                    "Not Found", "I couldn't find any related posts to your problem."
+                )
 
         self.helpmenu.add_command(label="Stackoverflow", command=stackoverflow)
