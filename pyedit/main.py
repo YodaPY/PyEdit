@@ -76,10 +76,12 @@ def run() -> None:
     root.title("PyEdit")
     syntax = Syntax(root)
     syntax.load_colors()
+    old_colors = syntax.colors
     texteditor = TextEditor(root)
     texteditor.pack(side="top", fill=BOTH, expand=True)
     root.mainloop()
-    syntax.save_colors()
+    if old_colors != syntax.colors:
+        syntax.save_colors()
 
 
 run()
