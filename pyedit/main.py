@@ -16,7 +16,7 @@ class TextEditor(Frame):
         self.add_scrollbar()
         if filename is not None:
             self.open_file()
-            
+
         bar = Toolbar(master, self.text)
         bar.current_file = filename
         bar.open_file_button()
@@ -53,10 +53,8 @@ class TextEditor(Frame):
             yscrollcommand=self.y_scrollbar.set,
             xscrollcommand=self.x_scrollbar.set,
             highlightcolor="white",
-            tabs=28,
             wrap=NONE,
-            undo=True,
-            maxundo=1,
+            undo=True
         )
 
         self.text.pack(fill=BOTH, side=RIGHT, expand=True)
