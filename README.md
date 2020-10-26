@@ -15,5 +15,5 @@ How to run:
 pip install git+https://github.com/YodaPY/PyEdit.git
 ```
 ```
-python -m pyedit
+python -m pyedit [filename]
 ```
