@@ -15,6 +15,7 @@ setup(
     url="https://github.com/YodaPY/PyEdit",
     packages=find_namespace_packages(include=["pyedit" + "*"]),
     install_requires=[],
+    include_package_data=True,
     python_requires=">=3.7.0,<3.10",
     classifiers=[
         "Development Status :: 4 - Beta",
