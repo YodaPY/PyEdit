@@ -1,3 +1,8 @@
+import sys
 from pyedit import main
 
-main.run()
+filename = None
+if len(sys.argv) > 1:
+    filename = sys.argv[1]
+
+main.run(filename)

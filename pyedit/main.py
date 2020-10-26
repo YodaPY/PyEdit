@@ -1,4 +1,4 @@
-from tkinter import BOTH, BOTTOM, NONE, RIGHT, Frame, Scrollbar, Tk, X, Y
+from tkinter import BOTH, BOTTOM, NONE, RIGHT, END, Frame, Scrollbar, Tk, X, Y
 
 from pyedit.lines import CustomText, TextLineNumbers
 from pyedit.syntax_highlighting import Syntax
@@ -6,14 +6,19 @@ from pyedit.toolbar import Toolbar
 
 
 class TextEditor(Frame):
-    def __init__(self, master=None) -> None:
+    def __init__(self, master, filename) -> None:
         super().__init__(master)
 
         self.master = master
+        self.filename = filename
         self.line_numbers = TextLineNumbers(self, width=20)
         self.syntax = Syntax(master)
         self.add_scrollbar()
+        if filename is not None:
+            self.open_file()
+            
         bar = Toolbar(master, self.text)
+        bar.current_file = filename
         bar.open_file_button()
         bar.save_file_button()
         bar.save_file_as_button()
@@ -70,18 +75,22 @@ class TextEditor(Frame):
     def on_key_release(self, event) -> None:
         self.syntax.highlight(self.text)
 
+    def open_file(self) -> None:
+        with open(self.filename) as f:
+            lines = f.read()
 
-def run() -> None:
+        self.text.insert(END, lines)
+        self.syntax.highlight(self.text)
+
+
+def run(filename) -> None:
     root = Tk()
     root.title("PyEdit")
     syntax = Syntax(root)
     syntax.load_colors()
     old_colors = syntax.colors
-    texteditor = TextEditor(root)
+    texteditor = TextEditor(root, filename)
     texteditor.pack(side="top", fill=BOTH, expand=True)
     root.mainloop()
     if old_colors != syntax.colors:
         syntax.save_colors()
-
-
-run()
